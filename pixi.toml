@@ -1,0 +1,17 @@
+[project]
+name = "matryoshka"
+version = "0.1.0"
+description = "Add a short description here"
+authors = ["Adrian Freund <adrian@freund.io>"]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tasks]
+build = "cargo build --release --target wasm32-unknown-unknown"
+test = { cmd = "typst compile -f png test.typ /dev/null", depends_on = ["build"] }
+
+[dependencies]
+typst = ">=0.11.1,<0.12"
+rust = ">=1.79.0,<1.80"
+rust-src = ">=1.79.0,<1.80"
+rust-std-wasm32-unknown-unknown = ">=1.79.0,<1.80"
