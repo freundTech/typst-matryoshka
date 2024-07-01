@@ -1,99 +1,59 @@
-use comemo::Prehashed;
-use typst::{Library, World};
-use typst::diag::{FileError, FileResult};
+use ciborium;
 use typst::eval::Tracer;
-use typst::foundations::{Bytes, Datetime, Smart};
-use typst::layout::PageElem;
-use typst::syntax::{FileId, Source, VirtualPath};
-use typst::text::{Font, FontBook};
-use typst::visualize::Luma;
 use wasm_minimal_protocol::*;
 
-use crate::font::FontLoader;
+use crate::io::{Input, Output};
+use crate::world::MatryoshkaWorld;
 
 mod font;
+mod io;
+mod world;
 
 initiate_protocol!();
 
 #[wasm_func]
-pub fn compile(byte_source: &[u8]) -> Vec<u8> {
-    let text = String::from_utf8(byte_source.to_vec()).unwrap();
+pub fn compile(byte_source: &[u8]) -> Result<Vec<u8>, String> {
+    let input: Input = match ciborium::from_reader(byte_source) {
+        Ok(i) => i,
+        Err(err) => return Err(String::from(format!("Failed to parse input {}", err)))
+    };
 
-    let world = MatryoshkaWorld::new(text);
+    let world = MatryoshkaWorld::new(input.source, input.filesystem);
 
     let mut tracer = Tracer::new();
     let result = typst::compile(&world, &mut tracer);
 
-    match result {
+    let output = match result {
         Ok(document) => {
-            let svg = typst_svg::svg(&document.pages[0].frame);
+            let svg = document
+                .pages
+                .into_iter()
+                .map(|page| {
+                    typst_svg::svg(&page.frame)
+                })
+                .collect();
 
-            return Vec::from(svg.as_bytes())
+            Output::new(svg)
         }
-        Err(_errors) => {
-            panic!("Failed");
+        Err(errors) => {
+            let err = errors.into_iter().map(|err| {
+                    err.message
+                })
+                .fold(String::new(), |a, b| a + &b.to_string() + "\n");
+
+            if input.dont_fail {
+                Output::error(err)
+            } else {
+                return Err(err)
+            }
         }
-    }
+    };
+
+    let mut bytes_output = Vec::new();
+    let _ = ciborium::into_writer(&output, &mut bytes_output).or_else(|err| {
+        return Err(err)
+    });
+
+    Ok(bytes_output)
 }
 
-
-struct MatryoshkaWorld {
-    library: Prehashed<Library>,
-    source: Source,
-    book: Prehashed<FontBook>,
-    fonts: Vec<Font>,
-}
-
-impl MatryoshkaWorld {
-    pub fn new(text: String) ->  Self {
-        let mut library = Library::builder().build();
-        let background_property = PageElem::set_fill(Some(Luma::new(1f32, 1f32).into()));
-        let height_property = PageElem::set_height(Smart::Auto);
-        library.styles.apply_one(background_property.into());
-        library.styles.apply_one(height_property.into());
-
-        let virtual_path = VirtualPath::new("main.typ");
-        let file_id = FileId::new(None, virtual_path);
-        let source = Source::new(file_id, text);
-
-        let mut font_loader = FontLoader::new();
-        font_loader.load();
-
-        MatryoshkaWorld {
-            library: Prehashed::new(library),
-            source: source,
-            book: Prehashed::new(font_loader.book),
-            fonts: font_loader.fonts,
-        }
-    }
-}
-
-impl World for MatryoshkaWorld {
-    fn library(&self) -> &Prehashed<Library> {
-        &self.library
-    }
-
-    fn book(&self) -> &Prehashed<FontBook> {
-        &self.book
-    }
-
-    fn main(&self) -> Source {
-        self.source.clone()
-    }
-
-    fn source(&self, _id: FileId) -> FileResult<Source> {
-        Err(FileError::Other(Some("Matryoshka doesn't support imports".into())))
-    }
-
-    fn file(&self, _id: FileId) -> FileResult<Bytes> {
-        Err(FileError::Other(Some("Matryoshka doesn't support imports".into())))
-    }
-
-    fn font(&self, index: usize) -> Option<Font> {
-        self.fonts.get(index).cloned()
-    }
-
-    fn today(&self, _offset: Option<i64>) -> Option<Datetime> {
-        Datetime::from_ymd(1970, 1, 1)
-    }
-}

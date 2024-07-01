@@ -1,14 +1,12 @@
-#let p = plugin("./target/wasm32-unknown-unknown/release/typst_matryoshka.wasm")
+#import "/lib.typ": compile
 
 #show <example>: it => {
-  let res = p.compile(bytes(it.text))
-
   set grid.cell(inset: 1em, align: horizon)
   grid(
     columns: 2,
     gutter: 1em,
     grid.cell(stroke: 1pt, it),
-    grid.cell(fill: gray, image.decode(res, format: "svg")),
+    grid.cell(fill: gray, compile(it.text, dont-fail: false, filesystem: ("content.typ": "#lorem(100)", "lib.typ": read("lib.typ"), "matryoshka.wasm": read("matryoshka.wasm", encoding: none)))),
   )
 }
 
@@ -31,4 +29,20 @@
     #link("mailto:doe@artos.edu")
   ]
 )
+
+#pagebreak()
+
+#include "content.typ"
+
+#pagebreak()
+
+#import "/lib.typ": compile
+
+#block(fill: gray, radius: 1em, inset: 1em)[
+  #compile("
+  = Hello world
+
+  This is typst in typst in typst
+  ")
+]
 ```<example>

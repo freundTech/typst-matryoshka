@@ -1,9 +1,7 @@
-test.pdf
 
 # pixi environments
 .pixi
 *.egg-info
 
-
-# Added by cargo
 /target
+/matryoshka.wasm

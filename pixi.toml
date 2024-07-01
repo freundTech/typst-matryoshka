@@ -4,14 +4,35 @@ version = "0.1.0"
 description = "Add a short description here"
 authors = ["Adrian Freund <adrian@freund.io>"]
 channels = ["conda-forge"]
-platforms = ["linux-64"]
-
-[tasks]
-build = "cargo build --release --target wasm32-unknown-unknown"
-test = { cmd = "typst compile -f png test.typ /dev/null", depends_on = ["build"] }
+platforms = ["linux-64", "linux-aarch64", "win-64", "osx-64", "osx-arm64"]
 
 [dependencies]
-typst = ">=0.11.1,<0.12"
+
+[feature.build.dependencies]
 rust = ">=1.79.0,<1.80"
 rust-src = ">=1.79.0,<1.80"
 rust-std-wasm32-unknown-unknown = ">=1.79.0,<1.80"
+
+[feature.build.tasks]
+build = "cargo build --release --target wasm32-unknown-unknown && cp target/wasm32-unknown-unknown/release/matryoshka.wasm ."
+clean = "cargo clean && rm -f matryoshka.wasm"
+
+
+[feature.test.dependencies]
+typst = ">=0.11.1,<0.12"
+typst-test = ">=0.0.0.post104.7babfc0,<0.0.0.1post"
+
+[feature.test.tasks]
+test = { cmd = "typst-test run", depends_on = ["build"] }
+
+[feature.package.dependencies]
+# tar not supported on windows. Think of something better.
+
+[feature.package.tasks]
+package = { cmd = "tar -czf matryoshka.tar.gz typst.toml README.md matryoshka.wasm lib.typ", depends_on = ["build"] }
+
+[environments]
+default = { features = ["build", "test", "package"], solve-group = "dev" }
+build = { features = ["build"], solve-group = "dev" }
+test = { features = ["test"], solve-group = "dev" }
+package = { features = ["package"], solve-group = "dev" }

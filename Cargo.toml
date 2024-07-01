@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
+name = "matryoshka"
 crate-type = ["cdylib"]
 
 [dependencies]
@@ -12,3 +13,6 @@ wasm-minimal-protocol = { git = "https://github.com/astrale-sharp/wasm-minimal-p
 typst-assets = { version = "0.11.1", features = ["fonts"] }
 comemo = "0.4.0"
 typst-svg = "0.11.1"
+serde = "1.0.203"
+ciborium = "0.2.2"
+bytes = "1.6.0"

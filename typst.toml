@@ -1,0 +1,7 @@
+[package]
+name = "matryoshka"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["Adrian Freund <adrian@freund.io>"]
+license = "MIT"
+description = "Run typst from within typst. Useful for documentation authors."
