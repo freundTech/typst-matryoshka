@@ -2,6 +2,7 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
+      - id: check-toml
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: check-merge-conflict
@@ -28,3 +29,9 @@ repos:
         entry: pixi run -e lint cargo clippy
         types: [rust]
         pass_filenames: false
+      - id: actionling
+        name: Lint GitHub Actions workflow files
+        language: system
+        entry: pixi run -e lint actionlint
+        types: [yaml]
+        files: ^\.github/workflows/
