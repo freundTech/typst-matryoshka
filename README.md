@@ -5,4 +5,4 @@ This is especially useful for package authors that want to generate manuals with
 
 ## Usage
 
-For usage instructions see the [documentation](https://raw.githubusercontent.com/freundTech/typst-matryoshka/main/doc/matryoshka.typ)
+For usage instructions see the [documentation](https://raw.githubusercontent.com/freundTech/typst-matryoshka/main/doc/matryoshka.pdf)
