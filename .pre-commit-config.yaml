@@ -18,6 +18,11 @@ repos:
         always_run: true
         require_serial: true
         pass_filenames: false
+      - id: typstyle
+        name: Format Typst source code
+        language: system
+        entry: pixi run -e lint typstyle -i
+        files: .*\.typ
       - id: typos
         name: Check for typos
         language: system

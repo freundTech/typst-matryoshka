@@ -73,21 +73,21 @@ Just write the example code directly into your document and use a `#show` rule t
 
 MATRYOSHKA is imported using
 #codesnippet[```typ
-#import "@preview/matryoshka:0.1.0"
-```]
+  #import "@preview/matryoshka:0.1.0"
+  ```]
 
 You can then use the #cmdref("compile") and #cmdref("compile-pages") commands to render Typst code.
 
 While #cmdref("compile") returns #dtype("content") directly, #cmdref("compile-pages") returns an #dtype("array"), which can be used when more control over how the pages are displayed is needed.
 #codesnippet[```typ
-#matryoshka.compile("= Hello World")
-```]
+  #matryoshka.compile("= Hello World")
+  ```]
 
 Because pages are #doc("visualize/image") elements they are affected by #doc("visualize/image") set and show rules.
 #codesnippet[```typ
-#set image(width: 3cm)
-#matryoshka.compile("= Hello World")
-```]
+  #set image(width: 3cm)
+  #matryoshka.compile("= Hello World")
+  ```]
 
 Note that in contrast to a normal Typst compiler, MATRYOSHKA automatically uses a page height of #value(auto). You can change this using a set rule in the code you want to compile.
 
