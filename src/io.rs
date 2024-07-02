@@ -12,21 +12,21 @@ pub(crate) struct Input {
 #[derive(Serialize)]
 pub(crate) struct Output {
     pub(crate) pages: Option<Vec<String>>,
-    pub(crate) error: Option<String>,
+    pub(crate) errors: Option<Vec<String>>,
 }
 
 impl Output {
     pub fn new(pages: Vec<String>) -> Self {
         Output {
             pages: Some(pages),
-            error: None,
+            errors: None,
         }
     }
 
-    pub fn error(error: String) -> Self {
+    pub fn error(errors: Vec<String>) -> Self {
         Output {
             pages: None,
-            error: Some(error),
+            errors: Some(errors),
         }
     }
 }
