@@ -1,4 +1,3 @@
-use ciborium;
 use typst::eval::Tracer;
 use wasm_minimal_protocol::*;
 
@@ -15,7 +14,7 @@ initiate_protocol!();
 pub fn compile(byte_source: &[u8]) -> Result<Vec<u8>, String> {
     let input: Input = match ciborium::from_reader(byte_source) {
         Ok(i) => i,
-        Err(err) => return Err(String::from(format!("Failed to parse input {}", err)))
+        Err(err) => return Err(format!("Failed to parse input {}", err))
     };
 
     let world = MatryoshkaWorld::new(input.source, input.filesystem);
@@ -39,7 +38,7 @@ pub fn compile(byte_source: &[u8]) -> Result<Vec<u8>, String> {
             let err = errors.into_iter().map(|err| {
                     err.message
                 })
-                .fold(String::new(), |a, b| a + &b.to_string() + "\n");
+                .fold(String::new(), |a, b| a + b.as_ref() + "\n");
 
             if input.dont_fail {
                 Output::error(err)
@@ -50,10 +49,10 @@ pub fn compile(byte_source: &[u8]) -> Result<Vec<u8>, String> {
     };
 
     let mut bytes_output = Vec::new();
-    let _ = ciborium::into_writer(&output, &mut bytes_output).or_else(|err| {
-        return Err(err)
-    });
+    match ciborium::into_writer(&output, &mut bytes_output) {
+        Ok(()) => {},
+        Err(err) => return Err(format!("Failed to encode output: {}", err))
+    };
 
     Ok(bytes_output)
 }
-

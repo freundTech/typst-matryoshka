@@ -35,10 +35,10 @@ impl MatryoshkaWorld {
 
         MatryoshkaWorld {
             library: Prehashed::new(library),
-            source: source,
+            source,
             book: Prehashed::new(font_loader.book),
             fonts: font_loader.fonts,
-            filesystem: filesystem,
+            filesystem,
         }
     }
 }

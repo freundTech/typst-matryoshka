@@ -20,7 +20,6 @@
   if result.error != none {
     return result.error
   }
-  
+
   result.pages.map(it => image.decode(it)).join()
 }
-

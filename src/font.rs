@@ -18,7 +18,7 @@ impl FontLoader {
     pub fn load(&mut self) {
         for data in typst_assets::fonts() {
             let buffer = typst::foundations::Bytes::from_static(data);
-            for (_i, font) in Font::iter(buffer).enumerate() {
+            for font in Font::iter(buffer) {
                 self.book.push(font.info().clone());
                 self.fonts.push(font);
             }
