@@ -21,8 +21,10 @@ c-compiler = ">=1.7.0,<1.8"
 build = "cargo build --release --target wasm32-unknown-unknown && cp target/wasm32-unknown-unknown/release/matryoshka.wasm ."
 rust-clean = "cargo clean && rm -f matryoshka.wasm"
 
-[feature.test.dependencies]
+[feature.typst.dependencies]
 typst = ">=0.11.1,<0.12"
+
+[feature.test.dependencies]
 typst-test = ">=0.0.0.post104.7babfc0,<0.0.0.1post"
 
 [feature.test.tasks]
@@ -39,15 +41,21 @@ pre-commit = ">=3.1.1,<3.2"
 pre-commit-install = "pre-commit install"
 lint = "pre-commit run -a"
 
+[feature.doc.dependencies]
+
+[feature.doc.tasks]
+doc = { cmd = "typst compile --root . doc/matryoshka.typ doc/matryoshka.pdf", depends_on = ["build"] }
+
 [feature.package.dependencies]
 # tar not supported on windows. Think of something better.
 
 [feature.package.tasks]
-package = { cmd = "tar -czf matryoshka.tar.gz typst.toml README.md matryoshka.wasm lib.typ", depends_on = ["build"] }
+package = { cmd = "tar -czf matryoshka.tar.gz typst.toml README.md LICENSE.txt matryoshka.wasm lib.typ", depends_on = ["build"] }
 
 [environments]
-default = { features = ["rust", "test", "package", "pre-commit"], solve-group = "dev" }
+default = { features = ["rust", "typst", "test", "package", "pre-commit"], solve-group = "dev" }
 build = { features = ["rust"], solve-group = "dev" }
-test = { features = ["test"], solve-group = "dev" }
+test = { features = ["typst", "test"], solve-group = "dev" }
 lint = {features = ["rust", "lint"], solve-group = "dev" }
+doc = {features = ["typst", "doc"], solve-group = "dev" }
 package = { features = ["package"], solve-group = "dev" }

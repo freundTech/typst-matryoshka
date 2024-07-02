@@ -11,19 +11,19 @@ repos:
       # ensure pixi environments are up to date
       # workaround for https://github.com/prefix-dev/pixi/issues/1482
       - id: pixi-install
-        name: pixi-install
+        name: Make sure pixi envs are up to date
         entry: pixi install -e lint
         language: system
         always_run: true
         require_serial: true
         pass_filenames: false
       - id: typos
-        name: typos
+        name: Check for typos
         language: system
         entry: pixi run -e lint typos
         types: [text]
       - id: clippy
-        name: clippy
+        name: Lint rust
         language: system
         entry: pixi run -e lint cargo clippy
         types: [rust]

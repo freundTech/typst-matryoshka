@@ -35,14 +35,13 @@ pub fn compile(byte_source: &[u8]) -> Result<Vec<u8>, String> {
             Output::new(svg)
         }
         Err(errors) => {
-            let err = errors.into_iter().map(|err| {
+            if input.dont_fail {
+                Output::error(errors.into_iter().map(|err| String::from(err.message)).collect())
+            } else {
+                let err = errors.into_iter().map(|err| {
                     err.message
                 })
                 .fold(String::new(), |a, b| a + b.as_ref() + "\n");
-
-            if input.dont_fail {
-                Output::error(err)
-            } else {
                 return Err(err)
             }
         }
