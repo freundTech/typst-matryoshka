@@ -29,13 +29,11 @@
       filesystem.at(key) = bytes(value)
     }
   }
-  let arg = cbor.encode(
-    (
-      source: source,
-      filesystem: filesystem,
-      dont-fail: dont-fail,
-    )
-  )
+  let arg = cbor.encode((
+    source: source,
+    filesystem: filesystem,
+    dont-fail: dont-fail,
+  ))
 
   let output = _matryoshka-plugin.compile(arg)
   let result = cbor.decode(output)
@@ -66,7 +64,7 @@
   let result = compile-pages(
     source,
     filesystem: filesystem,
-    dont-fail: dont-fail
+    dont-fail: dont-fail,
   )
 
   return result.join()

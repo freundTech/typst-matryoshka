@@ -37,6 +37,7 @@ test-clean = "typst-test clean"
 [feature.lint.dependencies]
 typos = ">=1.22.7,<1.23"
 actionlint = ">=1.7.1,<1.8"
+typstyle = ">=0.11.28,<0.12"
 
 [feature.pre-commit.dependencies]
 pre-commit = ">=3.1.1,<3.2"
@@ -57,7 +58,7 @@ doc = { cmd = "typst compile --root . doc/matryoshka.typ doc/matryoshka.pdf", de
 package = { cmd = "tar -czf matryoshka.tar.gz typst.toml README.md LICENSE.txt matryoshka.wasm lib.typ", depends_on = ["build"] }
 
 [environments]
-default = { features = ["rust", "typst", "test", "package", "pre-commit"], solve-group = "dev" }
+default = { features = ["rust", "typst", "test", "package", "pre-commit", "lint"], solve-group = "dev" }
 build = { features = ["rust"], solve-group = "dev" }
 test = { features = ["typst", "test"], solve-group = "dev" }
 lint = {features = ["rust", "lint"], solve-group = "dev" }
