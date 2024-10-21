@@ -12,7 +12,7 @@ typst = "0.11.1"
 wasm-minimal-protocol = { git = "https://github.com/astrale-sharp/wasm-minimal-protocol", version = "0.1.0" }
 typst-assets = { version = "0.11.1", features = ["fonts"] }
 comemo = "0.4.0"
-typst-svg = "0.11.1"
+typst-svg = "0.12.0"
 serde = "1.0.210"
 ciborium = "0.2.2"
 bytes = "1.7.2"
