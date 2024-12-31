@@ -1621,7 +1621,7 @@ dependencies = [
  "ttf-parser",
  "two-face",
  "typed-arena",
- "typst-assets",
+ "typst-assets 0.11.1",
  "typst-macros",
  "typst-syntax",
  "typst-timing",
@@ -1638,6 +1638,12 @@ name = "typst-assets"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b3061f8d268e8eec7481c9ab24540455cb4912983c49aae38fa6e8bf8ef4d9c"
+
+[[package]]
+name = "typst-assets"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4fe00da1b24da2c4a7da532fc33d0c3bd43a902ca4c408ee2c36eabe70f2f4ba"
 
 [[package]]
 name = "typst-macros"
@@ -1660,7 +1666,7 @@ dependencies = [
  "comemo",
  "serde",
  "typst",
- "typst-assets",
+ "typst-assets 0.12.0",
  "typst-svg",
  "wasm-minimal-protocol",
 ]

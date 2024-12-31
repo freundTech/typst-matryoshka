@@ -10,7 +10,7 @@ crate-type = ["cdylib"]
 [dependencies]
 typst = "0.11.1"
 wasm-minimal-protocol = { git = "https://github.com/astrale-sharp/wasm-minimal-protocol", version = "0.1.0" }
-typst-assets = { version = "0.11.1", features = ["fonts"] }
+typst-assets = { version = "0.12.0", features = ["fonts"] }
 comemo = "0.4.0"
 typst-svg = "0.11.1"
 serde = "1.0.217"
