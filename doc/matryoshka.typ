@@ -20,7 +20,7 @@
   date: datetime.today(),
   abstract: [
     #matryoshka, named after the famous nesting dolls, is a Typst compiler as a Typst plugin.
-    It allows you to compile Typst documents form within Typst.
+    It allows you to compile Typst documents from within Typst.
     This is especially useful for documentation authors, who might want to display example code and resulting document in their documentation.
     #matryoshka renders Typst code to #svg and then embeds that #svg into your original document.
   ],
