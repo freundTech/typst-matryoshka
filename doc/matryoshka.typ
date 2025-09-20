@@ -11,6 +11,7 @@
 #let date = datetime(year: 2024, month: 07, day: 02)
 
 #let matryoshka = package[matryoshka]
+#let svg = smallcaps[svg]
 
 #show: mantys.with(
   ..toml("/typst.toml"),
@@ -18,10 +19,10 @@
   subtitle: [Nested compilers],
   date: datetime.today(),
   abstract: [
-    #matryoshka, named after the famous nesting dolls, is a typst compiler as a typst plugin.
-    It allows you to compile typst documents form within typst.
+    #matryoshka, named after the famous nesting dolls, is a Typst compiler as a Typst plugin.
+    It allows you to compile Typst documents from within Typst.
     This is especially useful for documentation authors, who might want to display example code and resulting document in their documentation.
-    #matryoshka renders typst code to svg and then embeds that svg into your original document.
+    #matryoshka renders Typst code to #svg and then embeds that #svg into your original document.
   ],
   examples-scope: (matryoshka: lib),
 )
